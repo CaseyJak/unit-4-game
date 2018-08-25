@@ -8,7 +8,13 @@ $(document).ready(function setGame(){
 
     let fighter = null;
     let enemy = null;
-
+    let trophy = 0;
+    $(".dennis").prependTo(".charSelect");
+    $(".mac").prependTo(".charSelect");
+    $(".charlie").prependTo(".charSelect");
+    $(".dee").prependTo(".charSelect");
+    $(".playerStats").text("Health: "+0+"    Attack: "+0);
+    $(".enemyStats").text("Health: "+0);
     let dennis = {
         name : ["D.E.N.N.I.S."],
         attack: 3,
@@ -43,15 +49,17 @@ $(document).ready(function setGame(){
 
 // character select
 
-    $(".dennis").click(function (evt) {
+    $(".dennis").click(function () {
         if (fighter === null && enemy === null) {
             fighter = dennis;
             $(".dennis").prependTo(".playerChar");
+            $(".playerStats").text("Health: "+fighter.health+"    Attack: "+fighter.attack);
             return fighter;
         }
         if (fighter !== null && enemy === null) { 
             enemy = dennis;
             $(".dennis").prependTo(".enemyChar");
+            $(".enemyStats").text("Health: "+enemy.health);
             return enemy;
         }
         else {
@@ -59,15 +67,17 @@ $(document).ready(function setGame(){
         }
     });  
 
-    $(".mac").click(function (evt) {
+    $(".mac").click(function () {
         if (fighter === null && enemy === null) {
             fighter = mac;
             $(".mac").prependTo(".playerChar");
+            $(".playerStats").text("Health: "+fighter.health+"    Attack: "+fighter.attack);
             return fighter;
         }
         if (fighter !== null && enemy === null) { 
             enemy = mac;
             $(".mac").prependTo(".enemyChar");
+            $(".enemyStats").text("Health: "+enemy.health);
             return enemy;
         }
         else {
@@ -76,15 +86,17 @@ $(document).ready(function setGame(){
 
     });  
 
-    $(".charlie").click(function (evt) {
+    $(".charlie").click(function () {
         if (fighter === null && enemy === null) {
             fighter = charlie;
             $(".charlie").prependTo(".playerChar");
+            $(".playerStats").text("Health: "+fighter.health+"    Attack: "+fighter.attack);
             return fighter;
         }
         if (fighter !== null && enemy === null) { 
             enemy = charlie;
             $(".charlie").prependTo(".enemyChar");
+            $(".enemyStats").text("Health: "+enemy.health);
             return enemy;
         }
         else {
@@ -93,15 +105,17 @@ $(document).ready(function setGame(){
 
     });  
 
-    $(".dee").click(function (evt) {
+    $(".dee").click(function () {
         if (fighter === null && enemy === null) {
             fighter = dee;
             $(".dee").prependTo(".playerChar");
+            $(".playerStats").text("Health: "+fighter.health+"    Attack: "+fighter.attack);
             return fighter;
         }
         if (fighter !== null && enemy === null) { 
             enemy = dee;
             $(".dee").prependTo(".enemyChar");
+            $(".enemyStats").text("Health: "+enemy.health);
             return enemy;
         }
         else {
@@ -115,35 +129,52 @@ $(document).ready(function setGame(){
 
 // Attack play
 
-    $(".atkBtn").click(function (evt){
-        if (enemy === null && fighter.health > 0) {
-            alert("pleaes pick enemy character")
+    $(".atkBtn").click(function (){
+        if (fighter === null) {
+            alert ('Please pick Character')
+        } 
+        if (fighter !== null && enemy === null) {
+            alert("Please pick enemy character")
+        }
+        if (enemy.health <= 0 && fighter.health > 0) {
+            enemy = null;
+            trophy = trophy+1;
+            alert("Please pick next enemy!");
+            $(".enemyChar").hide();
+            return trophy;
+        }
+        if (enemy.health > 0 && fighter.health <= 0) {
+            alert("You Lose!");
+            return setGame();
         }
         else {
             fighter.health = fighter.health - enemy.counter;
             enemy.health = enemy.health-fighter.attack;
             fighter.attack = fighter.attack + fighter.attackNew;
+            $(".playerStats").text("Health: "+fighter.health+"    Attack: "+fighter.attack);
+            $(".enemyStats").text("Health: "+enemy.health);
+            return winGame();
         }
-        console.log("Fighter health:" + fighter.health);
-console.log("Enemy health:" + enemy.health);
-console.log("Fighter attack:" + fighter.attack);
+        console.log(enemy);
+        console.log(fighter);
     }) 
     
-
-
+    function winGame() {
+        if (trophy === 2) {
+            alert("You win!");
+            return setGame();
+        }
+        else {
+            trophy=trophy;
+        }
+    };
+  
 
     $(".rstBtn").click( function gameRst() {
-        $(".dennis").prependTo(".charSelect");
-        $(".mac").prependTo(".charSelect");
-        $(".charlie").prependTo(".charSelect");
-        $(".dee").prependTo(".charSelect");
+
         return setGame();
-        console.log(fighter);
-        console.log(enemy);
 
     });
-    console.log(fighter);
-    console.log(enemy);
 
 });
 
